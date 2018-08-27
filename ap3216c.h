@@ -36,12 +36,21 @@ enum ap3216c_int_clear_manner
 
 enum als_range
 {
-    AP3216C_ALS_RANGE_20661, //Resolution = 0.35 lux/count.
+    AP3216C_ALS_RANGE_20661, //Resolution = 0.35 lux/count(default).
     AP3216C_ALS_RANGE_5162,  //Resolution = 0.0788 lux/count.
     AP3216C_ALS_RANGE_1291,  //Resolution = 0.0197 lux/count.
     AP3216C_ALS_RANGE_323,   //Resolution = 0.0049 lux/count
 };
 typedef enum als_range als_range_t;
+
+enum als_gain
+{
+    AP3216C_ALS_GAIN1, //detection distance *1.
+    AP3216C_ALS_GAIN2, //detection distance *2 (default).
+    AP3216C_ALS_GAIN4, //detection distance *4.
+    AP3216C_ALS_GAIN8, //detection distance *8.
+};
+typedef enum als_gain als_gain_t;
 
 enum ap3216c_cmd
 {
@@ -55,7 +64,7 @@ enum ap3216c_cmd
     AP3216C_ALS_HIGH_THRESHOLD_L, //Lower byte of high interrupt threshold for ALS (Default : 0xFF)
     AP3216C_ALS_HIGH_THRESHOLD_H, //Higher byte of high interrupt threshold for ALS(Default : 0xFF)
     AP3216C_PS_INTEGRATED_TIME,   //PS or IR Integrated time select(Default : 0000)
-    AP3216C_PS_AGAIN,             //PS gain (Default : 01)
+    AP3216C_PS_GAIN,              //PS gain (Default : 01)
     AP3216C_PS_PERSIST,           //Interrupt filter(Default : 01)
     AP3216C_PS_LED_CONTROL,       //LED pulse(Default : 01)
     AP3216C_PS_LED_DRIVER_RATIO,  //LED driver ratio(Default : 11)
