@@ -91,7 +91,9 @@ RT-Thread online packages
 | != 0.0   | 测量光照强度值   |
 | =0.0     | 测量失败         |
 
+
 在读取光照强度过程中，默认量程为 AP3216C_ALS_RANGE_20661，如需修改，请参照下文的设置参数 API 进行设置，可配置的量程列表如下
+
 
 ```c
 enum als_range
