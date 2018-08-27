@@ -352,7 +352,7 @@ float ap3216c_read_ambient_light(ap3216c_device_t dev)
  */
 uint16_t ap3216c_read_ps_data(ap3216c_device_t dev)
 {
-    rt_uint16_t proximity=0;
+    rt_uint16_t proximity = 0;
     rt_err_t result;
 
     RT_ASSERT(dev);
@@ -471,6 +471,22 @@ rt_err_t ap3216c_set_param(ap3216c_device_t dev, ap3216c_cmd_t cmd, uint8_t valu
     case AP3216C_ALS_HIGH_THRESHOLD_H:
     {
         write_reg(dev->i2c, AP3216C_ALS_THRESHOLD_HIGH_H_REG, value);
+
+        break;
+    }
+    case AP3216C_PS_GAIN:
+    {
+        rt_uint8_t args = 0;
+
+        if (value > 0x3)
+        {
+            LOG_E("Setting ps again overflows ");
+            return -RT_ERROR;
+        }
+        read_regs(dev->i2c, AP3216C_PS_CONFIGURATION_REG, 1, &args);
+        args &= 0xf3;
+        args |= value;
+        write_reg(dev->i2c, AP3216C_PS_CONFIGURATION_REG, args);
 
         break;
     }
@@ -625,6 +641,16 @@ rt_err_t ap3216c_get_param(ap3216c_device_t dev, ap3216c_cmd_t cmd, rt_uint8_t *
     case AP3216C_ALS_HIGH_THRESHOLD_H:
     {
         read_regs(dev->i2c, AP3216C_ALS_THRESHOLD_HIGH_H_REG, 1, value);
+
+        break;
+    }
+    case AP3216C_PS_GAIN:
+    {
+        rt_uint8_t temp;
+
+        read_regs(dev->i2c, AP3216C_PS_CONFIGURATION_REG, 1, &temp);
+
+        *value = (temp & 0xc) >> 2;
 
         break;
     }
