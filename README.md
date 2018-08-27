@@ -89,7 +89,7 @@ RT-Thread online packages
 | != 0.0   | 测量光照强度值   |
 | =0.0     | 测量失败         |
 
-在读取光照强度过程中，计算出光照强度，默认为 AP3216C_ALS_RANGE_20661，如需设置请参照下文的设置参数进行设置，其中量程介绍如下
+在读取光照强度过程中，计算出光照强度，默认量程为 AP3216C_ALS_RANGE_20661。如需修改，请参照下文的设置参数 API 进行设置，可配置的量程列表如下
 
 ```c
 enum als_range
@@ -97,7 +97,7 @@ enum als_range
     AP3216C_ALS_RANGE_20661, // 精度为 0.35   lux/count.
     AP3216C_ALS_RANGE_5162,  // 精度为 0.0788 lux/count.
     AP3216C_ALS_RANGE_1291,  // 精度为 0.0197 lux/count.
-    AP3216C_ALS_RANGE_323,   // 精度为 0.0049 lux/count
+    AP3216C_ALS_RANGE_323,   // 精度为 0.0049 lux/count.
 };
 ```
 
@@ -271,8 +271,3 @@ msh />
 
 * 维护：[Ernest](https://github.com/ErnestChen1)
 * 主页：https://github.com/RT-Thread-packages/ap3216c
-
-
-```
-
-```
