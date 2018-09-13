@@ -14,8 +14,6 @@
 #include <rthw.h>
 #include <rtthread.h>
 
-#include "drv_iic.h"
-
 enum ap3216c_mode_value
 {
     AP3216C_MODE_POWER_DOWN,      //Power down (Default)
