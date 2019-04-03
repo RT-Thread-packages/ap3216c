@@ -107,7 +107,7 @@ enum als_range
 
 #### 3.1.4 读取接近感应
 
-`uint16_t ap3216c_read_humidity(ap3216c_device_t dev)`
+`uint16_t ap3216c_read_ps_data(ap3216c_device_t dev)`
 
 通过 `ap3216c` 传感器读取接近感应测量值，返回 `16` 位接近感应值，具体参数与返回说明如下表
 
