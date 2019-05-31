@@ -582,7 +582,7 @@ rt_err_t ap3216c_get_param(ap3216c_device_t dev, ap3216c_cmd_t cmd, rt_uint8_t *
 
         if (*value > AP3216C_ALS_CLEAR_MANNER_BY_SOFTWARE)
         {
-            LOG_E("Setting int parameter is wrong !");
+            LOG_E("Getting int parameter is wrong !");
             return -RT_ERROR;
         }
         break;
