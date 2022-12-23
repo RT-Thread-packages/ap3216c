@@ -11,8 +11,7 @@
 #ifndef __DRV_AP3216C_H__
 #define __DRV_AP3216C_H__
 
-#include <rthw.h>
-#include <rtthread.h>
+#include <rtdef.h>
 
 enum ap3216c_mode_value
 {

@@ -388,7 +388,7 @@ uint16_t ap3216c_read_ps_data(ap3216c_device_t dev)
  *
  * @return the setting parameter status,RT_EOK reprensents setting successfully.
  */
-rt_err_t ap3216c_set_param(ap3216c_device_t dev, ap3216c_cmd_t cmd, uint8_t value)
+rt_err_t ap3216c_set_param(ap3216c_device_t dev, ap3216c_cmd_t cmd, rt_uint8_t value)
 {
     RT_ASSERT(dev);
 
