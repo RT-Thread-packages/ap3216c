@@ -58,7 +58,7 @@ static rt_err_t _ap3216c_set_accuracy(rt_sensor_t sensor, rt_uint8_t accuracy)
 
     struct ap3216c_device *als_ps_dev = sensor->parent.user_data;
 
-    if(sensor->info.type == RT_SENSOR_TYPE_LIGHT)
+    if (sensor->info.type == RT_SENSOR_TYPE_LIGHT)
     {
         switch(accuracy)
         {
@@ -94,10 +94,9 @@ static rt_err_t _ap3216c_set_accuracy(rt_sensor_t sensor, rt_uint8_t accuracy)
                 sensor->info.scale.range_max = 20661;
                 break;
         }
-        ap3216c_set_param(als_ps_dev, AP3216C_ALS_RANGE, ap3216_range);
-        result = RT_EOK;
+        result = ap3216c_set_param(als_ps_dev, AP3216C_ALS_RANGE, ap3216_range);
     }
-    else if(sensor->info.type == RT_SENSOR_TYPE_PROXIMITY)
+    else if (sensor->info.type == RT_SENSOR_TYPE_PROXIMITY)
     {
         switch(accuracy)
         {
@@ -113,8 +112,7 @@ static rt_err_t _ap3216c_set_accuracy(rt_sensor_t sensor, rt_uint8_t accuracy)
             default:
                 break;
         }
-        ap3216c_set_param(als_ps_dev, AP3216C_PS_GAIN, ap3216_range);
-        result = RT_EOK;
+        result = ap3216c_set_param(als_ps_dev, AP3216C_PS_GAIN, ap3216_range);
     }
 
     return result;
@@ -123,8 +121,63 @@ static rt_err_t _ap3216c_set_accuracy(rt_sensor_t sensor, rt_uint8_t accuracy)
 static rt_err_t _ap3216c_set_power(rt_sensor_t sensor, rt_uint8_t power)
 {
     rt_err_t result = -RT_EINVAL;
+    struct ap3216c_device *als_ps_dev = sensor->parent.user_data;
+    rt_uint8_t power_mode;
 
+    result = ap3216c_get_param(als_ps_dev, AP3216C_SYSTEM_MODE, &power_mode);
+    if(result != RT_EOK)
+    {
+        LOG_E("Fail to get the ap3216c parameters!");
+        return result;
+    }
+
+    if (sensor->info.type == RT_SENSOR_TYPE_LIGHT)
+    {
+        switch(power)
+        {
+            case RT_SENSOR_MODE_POWER_HIGHEST:
+            case RT_SENSOR_MODE_POWER_HIGH:
+            case RT_SENSOR_MODE_POWER_MEDIUM:
+            case RT_SENSOR_MODE_POWER_LOW:
+            case RT_SENSOR_MODE_POWER_LOWEST:
+                power_mode |= 0x01; /* enable ALS function */
+                sensor->info.acquire_min = 100;
+                break;
+
+            case RT_SENSOR_MODE_POWER_DOWN:
+            default:
+                power_mode &= 0xFE; /* disable ALS function */
+                break;
+        }
+        result = ap3216c_set_param(als_ps_dev, AP3216C_SYSTEM_MODE, power_mode);
+    }
+    else if (sensor->info.type == RT_SENSOR_TYPE_PROXIMITY)
+    {
+        switch(power)
+        {
+            case RT_SENSOR_MODE_POWER_HIGHEST:
+            case RT_SENSOR_MODE_POWER_HIGH:
+            case RT_SENSOR_MODE_POWER_MEDIUM:
+            case RT_SENSOR_MODE_POWER_LOW:
+            case RT_SENSOR_MODE_POWER_LOWEST:
+                power_mode |= 0x02; /* enable PS+IR function */
+                sensor->info.acquire_min = 13; /* 12.5ms */
+                break;
+
+            case RT_SENSOR_MODE_POWER_DOWN:
+            default:
+                power_mode &= 0xFD; /* disable PS+IR function */
+                break;
+        }
+        result = ap3216c_set_param(als_ps_dev, AP3216C_SYSTEM_MODE, power_mode);
+    }
     return result;
+}
+
+static rt_err_t _ap3216c_reset(rt_sensor_t sensor)
+{
+    struct ap3216c_device *als_ps_dev = sensor->parent.user_data;
+    return ap3216c_reset_sensor(als_ps_dev);
 }
 
 static rt_err_t ap3216c_control(rt_sensor_t sensor, int cmd, void *args)
@@ -138,6 +191,9 @@ static rt_err_t ap3216c_control(rt_sensor_t sensor, int cmd, void *args)
             break;
         case RT_SENSOR_CTRL_SET_POWER_MODE:
             result = _ap3216c_set_power(sensor, (rt_uint32_t)args);
+            break;
+        case RT_SENSOR_CTRL_SOFT_RESET:
+            result = _ap3216c_reset(sensor);
             break;
         default:
             return -RT_ERROR;
@@ -176,8 +232,6 @@ int rt_hw_ap3216c_init(const char *name, struct rt_sensor_config *cfg)
     sensor_als->info.name       = sensor_name;
     sensor_als->info.unit       = RT_SENSOR_UNIT_LUX;
     sensor_als->info.intf_type  = RT_SENSOR_INTF_I2C;
-
-    sensor_als->info.acquire_min = 5;
 
     rt_memcpy(&sensor_als->config, cfg, sizeof(struct rt_sensor_config));
     sensor_als->ops = &sensor_ops;
