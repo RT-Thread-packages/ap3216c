@@ -147,6 +147,8 @@ ap3216c_device_t ap3216c_init(const char *i2c_bus_name);
  */
 void ap3216c_deinit(ap3216c_device_t dev);
 
+rt_err_t ap3216c_reset_sensor(ap3216c_device_t dev);
+
 /**
  * This function reads temperature by ap3216c sensor measurement
  *

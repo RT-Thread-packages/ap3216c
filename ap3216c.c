@@ -107,12 +107,15 @@ static rt_err_t read_regs(struct rt_i2c_bus_device *bus, rt_uint8_t reg, rt_uint
     }
 }
 
-static rt_err_t reset_sensor(ap3216c_device_t dev)
+rt_err_t ap3216c_reset_sensor(ap3216c_device_t dev)
 {
-    RT_ASSERT(dev);
+    if (dev == RT_NULL)
+    {
+        return -RT_EINVAL;
+    }
 
     write_reg(dev->i2c, AP3216C_SYS_CONFIGURATION_REG, AP3216C_MODE_SW_RESET); //reset
-
+    rt_thread_mdelay(15); /* need to wait at least 10ms */
     return RT_EOK;
 }
 
@@ -263,11 +266,10 @@ ap3216c_device_t ap3216c_init(const char *i2c_bus_name)
     }
 
     /* reset ap3216c */
-    reset_sensor(dev);
-    rt_thread_delay(rt_tick_from_millisecond(100)); // delay at least  100ms
+    ap3216c_reset_sensor(dev);
+
 
     ap3216c_set_param(dev, AP3216C_SYSTEM_MODE, AP3216C_MODE_ALS_AND_PS);
-    rt_thread_delay(rt_tick_from_millisecond(100)); // delay at least  100ms
 
 #ifdef AP3216C_USING_HW_INT
     /* init interrupt mode	*/
