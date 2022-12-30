@@ -84,15 +84,14 @@ static rt_err_t _ap3216c_set_accuracy(rt_sensor_t sensor, rt_uint8_t accuracy)
                 sensor->info.scale.range_max = 5162;
                 break;
             case RT_SENSOR_MODE_ACCURACY_LOW:
-            case RT_SENSOR_MODE_ACCURACY_LOWEST:
-            case RT_SENSOR_MODE_ACCURACY_NOTRUST:
-            default:
                 ap3216_range = AP3216C_ALS_RANGE_20661;
                 sensor->info.accuracy.resolution = 0.35; //Resolution = 0.35 lux/count.
                 sensor->info.accuracy.error = 0;
                 sensor->info.scale.range_min = 0;
                 sensor->info.scale.range_max = 20661;
                 break;
+            default:
+                return -RT_EINVAL;
         }
         result = ap3216c_set_param(als_ps_dev, AP3216C_ALS_RANGE, ap3216_range);
     }
@@ -100,17 +99,8 @@ static rt_err_t _ap3216c_set_accuracy(rt_sensor_t sensor, rt_uint8_t accuracy)
     {
         switch(accuracy)
         {
-            case RT_SENSOR_MODE_ACCURACY_HIGHEST:
-                break;
-            case RT_SENSOR_MODE_ACCURACY_HIGH:
-                break;
-            case RT_SENSOR_MODE_ACCURACY_MEDIUM:
-                break;
-            case RT_SENSOR_MODE_ACCURACY_LOW:
-            case RT_SENSOR_MODE_ACCURACY_LOWEST:
-            case RT_SENSOR_MODE_ACCURACY_NOTRUST:
             default:
-                break;
+                return -RT_EINVAL;
         }
         result = ap3216c_set_param(als_ps_dev, AP3216C_PS_GAIN, ap3216_range);
     }
@@ -136,18 +126,14 @@ static rt_err_t _ap3216c_set_power(rt_sensor_t sensor, rt_uint8_t power)
         switch(power)
         {
             case RT_SENSOR_MODE_POWER_HIGHEST:
-            case RT_SENSOR_MODE_POWER_HIGH:
-            case RT_SENSOR_MODE_POWER_MEDIUM:
-            case RT_SENSOR_MODE_POWER_LOW:
-            case RT_SENSOR_MODE_POWER_LOWEST:
                 power_mode |= 0x01; /* enable ALS function */
                 sensor->info.acquire_min = 100;
                 break;
-
             case RT_SENSOR_MODE_POWER_DOWN:
-            default:
                 power_mode &= 0xFE; /* disable ALS function */
                 break;
+            default:
+                return -RT_EINVAL;
         }
         result = ap3216c_set_param(als_ps_dev, AP3216C_SYSTEM_MODE, power_mode);
     }
@@ -156,18 +142,14 @@ static rt_err_t _ap3216c_set_power(rt_sensor_t sensor, rt_uint8_t power)
         switch(power)
         {
             case RT_SENSOR_MODE_POWER_HIGHEST:
-            case RT_SENSOR_MODE_POWER_HIGH:
-            case RT_SENSOR_MODE_POWER_MEDIUM:
-            case RT_SENSOR_MODE_POWER_LOW:
-            case RT_SENSOR_MODE_POWER_LOWEST:
                 power_mode |= 0x02; /* enable PS+IR function */
                 sensor->info.acquire_min = 13; /* 12.5ms */
                 break;
-
             case RT_SENSOR_MODE_POWER_DOWN:
-            default:
                 power_mode &= 0xFD; /* disable PS+IR function */
                 break;
+            default:
+                return -RT_EINVAL;
         }
         result = ap3216c_set_param(als_ps_dev, AP3216C_SYSTEM_MODE, power_mode);
     }
@@ -182,7 +164,7 @@ static rt_err_t _ap3216c_reset(rt_sensor_t sensor)
 
 static rt_err_t ap3216c_control(rt_sensor_t sensor, int cmd, void *args)
 {
-    rt_err_t result = RT_EOK;
+    rt_err_t result = -RT_EINVAL;
 
     switch (cmd)
     {
@@ -196,7 +178,7 @@ static rt_err_t ap3216c_control(rt_sensor_t sensor, int cmd, void *args)
             result = _ap3216c_reset(sensor);
             break;
         default:
-            return -RT_ERROR;
+            return -RT_EINVAL;
     }
 
     return result;
