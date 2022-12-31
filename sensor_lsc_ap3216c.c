@@ -17,7 +17,7 @@
 
 static rt_ssize_t _ap3216c_polling_get_data(rt_sensor_t sensor, struct rt_sensor_data *data)
 {
-    struct ap3216c_device *als_ps_dev = sensor->parent.user_data; // ???what the fuck??
+    struct ap3216c_device *als_ps_dev = sensor->parent.user_data;
 
     if (sensor->info.type == RT_SENSOR_TYPE_LIGHT)
     {
