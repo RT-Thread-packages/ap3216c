@@ -83,7 +83,7 @@ static rt_err_t _ap3216c_set_accuracy(rt_sensor_t sensor, rt_uint8_t accuracy)
                 sensor->info.scale.range_min = 0;
                 sensor->info.scale.range_max = 5162;
                 break;
-            case RT_SENSOR_MODE_ACCURACY_LOW:
+            case RT_SENSOR_MODE_ACCURACY_LOWEST:
                 ap3216_range = AP3216C_ALS_RANGE_20661;
                 sensor->info.accuracy.resolution = 0.35; //Resolution = 0.35 lux/count.
                 sensor->info.accuracy.error = 0;
