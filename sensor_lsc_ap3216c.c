@@ -236,8 +236,6 @@ int rt_hw_ap3216c_init(const char *name, struct rt_sensor_config *cfg)
     sensor_ps->info.unit       = RT_SENSOR_UNIT_CM;
     sensor_ps->info.intf_type  = RT_SENSOR_INTF_I2C;
 
-    sensor_ps->info.acquire_min = 5;
-
     rt_memcpy(&sensor_ps->config, cfg, sizeof(struct rt_sensor_config));
     sensor_ps->ops = &sensor_ops;
 
