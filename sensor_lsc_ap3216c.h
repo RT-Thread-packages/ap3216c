@@ -11,7 +11,7 @@
 #ifndef SENSOR_LSC_AP3216C_H__
 #define SENSOR_LSC_AP3216C_H__
 
-#include "sensor.h"
+#include "drivers/sensor.h"
 #include "ap3216c.h"
 
 #define AP3216C_I2C_ADDR 0x1e

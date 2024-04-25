@@ -39,7 +39,13 @@ static rt_size_t _ap3216c_polling_get_data(rt_sensor_t sensor, struct rt_sensor_
     return 1;
 }
 
-static rt_size_t ap3216c_fetch_data(struct rt_sensor_device *sensor, void *buf, rt_size_t len)
+static
+#if RT_VER_NUM >= 0x50000
+    rt_ssize_t
+#else
+    rt_size_t
+#endif
+                ap3216c_fetch_data(struct rt_sensor_device *sensor, void *buf, rt_size_t len)
 {
     RT_ASSERT(buf);
 
