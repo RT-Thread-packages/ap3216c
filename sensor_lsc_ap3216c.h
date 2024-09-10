@@ -28,9 +28,11 @@
     #endif
 
     #if (RTTHREAD_VERSION >= RT_VERSION_CHECK(5, 2, 0))
-        #include "drivers/dev_sensor_v2.h"
+        #include "drivers/dev_sensor.h"
+    #elif (RTTHREAD_VERSION >= RT_VERSION_CHECK(5, 1, 0))
+        #include "drivers/sensor.h"
     #else
-        #include "drivers/sensor_v2.h"
+        #include "sensor.h"
     #endif
 #endif
 
