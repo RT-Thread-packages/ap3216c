@@ -12,13 +12,11 @@
 #define SENSOR_LSC_AP3216C_H__
 
 #include "ap3216c.h"
+
+#include <rtthread.h>
 #include <rtdevice.h>
 
 #define AP3216C_I2C_ADDR 0x1e
-
-#if defined(RT_USING_SENSOR)
-
-#include <rtthread.h>
 
 #if defined(RT_VERSION_CHECK)
     #if (RTTHREAD_VERSION >= RT_VERSION_CHECK(5, 0, 2))
@@ -26,18 +24,8 @@
     #else
         #define RT_SIZE_TYPE   rt_size_t
     #endif
-
-    #if (RTTHREAD_VERSION >= RT_VERSION_CHECK(5, 2, 0))
-        #include "drivers/dev_sensor.h"
-    #elif (RTTHREAD_VERSION >= RT_VERSION_CHECK(5, 1, 0))
-        #include "drivers/sensor.h"
-    #else
-        #include "sensor.h"
-    #endif
 #endif
 
 int rt_hw_ap3216c_init(const char *name, struct rt_sensor_config *cfg);
-
-#endif
 
 #endif
