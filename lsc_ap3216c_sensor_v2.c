@@ -8,7 +8,7 @@
  * 2019-05-31     yangjie      the first version
  */
 
-#include "sensor_lsc_ap3216c.h"
+#include "lsc_ap3216c_sensor_v2.h"
 
 #define DBG_TAG "sensor.lsc.ap3216c"
 #define DBG_LVL DBG_INFO

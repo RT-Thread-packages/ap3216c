@@ -8,8 +8,8 @@
  * 2019-05-31     yangjie      the first version
  */
 
-#ifndef SENSOR_LSC_AP3216C_H__
-#define SENSOR_LSC_AP3216C_H__
+#ifndef LSC_AP3216C_SENSOR_V2_H__
+#define LSC_AP3216C_SENSOR_V2_H__
 
 #include "ap3216c.h"
 
