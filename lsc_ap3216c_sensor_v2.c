@@ -8,14 +8,13 @@
  * 2019-05-31     yangjie      the first version
  */
 
-#include "sensor_lsc_ap3216c.h"
-#include "ap3216c.h"
+#include "lsc_ap3216c_sensor_v2.h"
 
 #define DBG_TAG "sensor.lsc.ap3216c"
 #define DBG_LVL DBG_INFO
 #include <rtdbg.h>
 
-static rt_ssize_t _ap3216c_polling_get_data(rt_sensor_t sensor, struct rt_sensor_data *data)
+static RT_SIZE_TYPE _ap3216c_polling_get_data(rt_sensor_t sensor, struct rt_sensor_data *data)
 {
     struct ap3216c_device *als_ps_dev = sensor->parent.user_data;
 
@@ -37,7 +36,7 @@ static rt_ssize_t _ap3216c_polling_get_data(rt_sensor_t sensor, struct rt_sensor
     }
 }
 
-static rt_ssize_t ap3216c_fetch_data(rt_sensor_t sensor, rt_sensor_data_t buf, rt_size_t len)
+static RT_SIZE_TYPE ap3216c_fetch_data(rt_sensor_t sensor, rt_sensor_data_t buf, rt_size_t len)
 {
     RT_ASSERT(buf);
 
